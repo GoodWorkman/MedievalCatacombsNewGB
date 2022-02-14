@@ -10,7 +10,7 @@ namespace Player
             transform.position = new Vector3(
                 Mathf.Clamp(transform.position.x, -2f, 2f),
                 transform.position.y,
-                Mathf.Clamp(transform.position.z, -6f, 6f));
+                Mathf.Clamp(transform.position.z, -2f, 2f));
             
         }
     }
