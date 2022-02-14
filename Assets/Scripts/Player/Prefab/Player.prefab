@@ -129,7 +129,8 @@ MonoBehaviour:
   muzzle: {fileID: 5028487066865587233}
   bulletFab: {fileID: 6469031935774644626, guid: 2eb67dafc0fdf47a0b25fc46005941cb,
     type: 3}
-  mineFab: {fileID: 3259092258352191935, guid: 281f94af229044243a06b52a1ab8de23, type: 3}
+  mineFab: {fileID: 3259092258352191909, guid: 281f94af229044243a06b52a1ab8de23, type: 3}
+  _mineDropPower: 6
 --- !u!136 &5028487065960879305
 CapsuleCollider:
   m_ObjectHideFlags: 0

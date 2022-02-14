@@ -6,7 +6,7 @@ namespace Player
     {
         public Transform muzzle;
         public GameObject bulletFab;
-        public GameObject mineFab;
+        public Rigidbody mineFab;
 
         private void Update()
         {
@@ -19,10 +19,12 @@ namespace Player
         {
             Instantiate(bulletFab, muzzle.position, transform.rotation);
         }
-    
+
+        [SerializeField] private float _mineDropPower = 2;
         private void CreateMine()
         {
-            Instantiate(mineFab, muzzle.position, transform.rotation);
+            Vector3 dropDirection = (transform.forward + Vector3.up) * _mineDropPower;
+            Instantiate(mineFab, muzzle.position, transform.rotation).velocity = dropDirection;
         }
     }
 }
