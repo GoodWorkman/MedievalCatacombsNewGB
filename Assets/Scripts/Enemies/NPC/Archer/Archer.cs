@@ -20,10 +20,10 @@ namespace Enemies.NPC.Archer
          _agent = GetComponent<NavMeshAgent>();
          _player = FindObjectOfType<PlayerMove1>().transform;
          _agent.SetDestination(path[_currentWayIndex].position);
-         for (int i = 0; i < path.Length; i++)
+         /*for (int i = 0; i < path.Length; i++)
          {
             path[i].parent = null; // распаренсиваем точки (выводим от родительского объекта)
-         }
+         }*/
       }
       private void Update()
       {
