@@ -5,54 +5,55 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
+        [Header("Moving properties")]
         public float speedMoving = 5f;
-        public float jumpForce = 15f;
+        public float jumpHeight = 15f;
         
         [Header("GroundChecker")] 
         public Transform groundCheckPoint;
         public float checkRadius = .5f;
         public LayerMask whatIsGround;
-        
-        [Header("Camera follow")] 
-        public Transform cameraPosition;
-        
-        private Rigidbody _rigidbody;
-        private bool _isGrounded = false;
 
-        private float _smoothVelocityRotation = 0;
-        private float _smoothTimeRotation = 0.1f;
+        [Header("Physics")] 
+        public float gravity = -9.81f;
+        private Vector3 _velocity;
+
+        private CharacterController _characterController;
+        private bool _isGrounded = false;
         
         private void Start()
         {
-            _rigidbody = GetComponent<Rigidbody>();
+            _characterController = GetComponent<CharacterController>();
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
             CheckGround();
+            UpdateVelocity();
         }
 
         public void Move(float left, float forward)
         {
-
-            float targetAngel = Mathf.Atan2(left, forward) * Mathf.Rad2Deg + cameraPosition.eulerAngles.y;
-            float smoothAngel = Mathf.SmoothDampAngle(
-                transform.eulerAngles.y, 
-                targetAngel,
-                ref _smoothVelocityRotation, 
-                _smoothTimeRotation);
-                transform.rotation = Quaternion.Euler(0, smoothAngel, 0
-                );
-                
-            Vector3 moveDirection = Quaternion.Euler(0,smoothAngel,0) * Vector3.forward * speedMoving;
-            moveDirection = moveDirection.normalized;
-            _rigidbody.velocity = new Vector3(moveDirection.x, _rigidbody.velocity.y, moveDirection.z);
+            Vector3 direction = transform.right * left + transform.forward * forward;
+            _characterController.Move(direction * (speedMoving * Time.deltaTime));
         }
-
+        
         public void Jump()
         {
             if (!_isGrounded) return;
-            _rigidbody.AddForce(Vector3.up * jumpForce);
+
+            _velocity.y += Mathf.Sqrt( jumpHeight * -2 * gravity);
+        }
+
+        private void UpdateVelocity()
+        {
+            if (_isGrounded && _velocity.y < 0)
+            {
+                _velocity.y = 0;
+            }
+
+            _velocity.y += gravity * Time.deltaTime;
+            _characterController.Move(_velocity * Time.deltaTime);
         }
 
         private void CheckGround()

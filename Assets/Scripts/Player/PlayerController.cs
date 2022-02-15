@@ -5,9 +5,10 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        public float sensitivity = 2;
+        public float sensitivityPlayerRotation = 2;
         private PlayerMovement _playerMovement;
-
+        public Transform playerCamera;
+        
         private void Start()
         {
             _playerMovement = GetComponent<PlayerMovement>();
@@ -17,7 +18,7 @@ namespace Player
         {
             float left = Input.GetAxis("Horizontal");
             float forward = Input.GetAxis("Vertical");
-
+            
             _playerMovement.Move(left, forward);
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -25,12 +26,15 @@ namespace Player
                 _playerMovement.Jump();
             }
             
-            //RotateAround();
+            if (left != 0 || forward != 0) RotateAround();
         }
 
         private void RotateAround()
         {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+            Vector3 lookDirection = playerCamera.forward * Input.GetAxis("Vertical") +
+                                    playerCamera.right * Input.GetAxis("Horizontal");
+            lookDirection.y = 0;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), sensitivityPlayerRotation);
         }
     }
 }
