@@ -5,9 +5,11 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
-        public float sensitivityPlayerRotation = 2;
-        private PlayerMovement _playerMovement;
+        [Header("Smooth player rotation")]
+        public float sensitivityPlayerRotation = 0.05f;
         public Transform playerCamera;
+        
+        private PlayerMovement _playerMovement;
         
         private void Start()
         {
@@ -26,13 +28,14 @@ namespace Player
                 _playerMovement.Jump();
             }
             
-            if (left != 0 || forward != 0) RotateAround();
+            RotateAround(left, forward);
         }
 
-        private void RotateAround()
+        private void RotateAround(float left, float forward)
         {
-            Vector3 lookDirection = playerCamera.forward * Input.GetAxis("Vertical") +
-                                    playerCamera.right * Input.GetAxis("Horizontal");
+            if (left == 0 && forward == 0) return;
+            
+            Vector3 lookDirection = (playerCamera.forward * forward) + (playerCamera.right * left);
             lookDirection.y = 0;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(lookDirection), sensitivityPlayerRotation);
         }

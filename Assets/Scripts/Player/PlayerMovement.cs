@@ -35,6 +35,7 @@ namespace Player
         public void Move(float left, float forward)
         {
             Vector3 direction = transform.right * left + transform.forward * forward;
+            
             _characterController.Move(direction * (speedMoving * Time.deltaTime));
         }
         
@@ -42,7 +43,7 @@ namespace Player
         {
             if (!_isGrounded) return;
 
-            _velocity.y += Mathf.Sqrt( jumpHeight * -2 * gravity);
+            _velocity.y += Mathf.Sqrt( jumpHeight * -2 * gravity); // скорость свободного падения, на оборот
         }
 
         private void UpdateVelocity()
