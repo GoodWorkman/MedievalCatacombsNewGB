@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Player.Weapons.Bullet;
 
 namespace Player
 {
     public class PlayerAttack : MonoBehaviour
     {
+        [SerializeField] private Aim _aim;
         public Transform muzzle;
-        public GameObject bulletFab;
+        public Transform bulletFab;
         public Rigidbody mineFab;
+
 
         private void Update()
         {
@@ -17,7 +21,8 @@ namespace Player
 
         private  void CreateBullet()
         {
-            Instantiate(bulletFab, muzzle.position, transform.rotation);
+            muzzle.LookAt(_aim._aimPosition);
+            Instantiate(bulletFab, muzzle.position, muzzle.rotation);
         }
 
         [SerializeField] private float _mineDropPower = 2;
